@@ -152,7 +152,7 @@ const options = {
   host: "localhost",
   user: "root",
   password: "",
-  database: "askeryazici",
+  database: "askeri_belge_takip",
 };
 
 const connection = mysql.createConnection(options);
@@ -231,15 +231,23 @@ const createLog = async (req, action_type, table_name, record_id, old_data = nul
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())
     `;
 
+    // Kullanıcı ID'sini güvenli bir şekilde al
+    let userId = null;
+    if (req && req.user) {
+      userId = req.user.id;
+    } else if (req && req.body && req.body.user_id) {
+      userId = req.body.user_id;
+    }
+
     const values = [
-      "1",
+      userId || 1, // Eğer kullanıcı ID bulunamazsa varsayılan olarak 1 kullan
       action_type,
       table_name,
       record_id,
       old_data ? JSON.stringify(old_data) : null,
       new_data ? JSON.stringify(new_data) : null,
-      req.ip,
-      req.headers['user-agent'],
+      req?.ip || '0.0.0.0',
+      req?.headers?.['user-agent'] || 'Unknown',
     ];
 
     return new Promise((resolve, reject) => {
