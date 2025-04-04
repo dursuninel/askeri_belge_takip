@@ -9,7 +9,13 @@ import * as Yup from "yup";
 import { classNames } from "primereact/utils";
 import axios from "axios";
 
-export default function DocumentForm({ setRender, setState, defaultValues, showSuccess, showError }) {
+export default function DocumentForm({
+  setRender,
+  setState,
+  defaultValues,
+  showSuccess,
+  showError,
+}) {
   const [sending, setSending] = useState(false);
 
   const documentTypes = [
@@ -60,7 +66,9 @@ export default function DocumentForm({ setRender, setState, defaultValues, showS
       personnel_name: defaultValues?.personnel_name || "",
       personnel_rank: defaultValues?.personnel_rank || "",
       personnel_id: defaultValues?.personnel_id || "",
-      document_date: defaultValues?.document_date ? new Date(defaultValues.document_date) : null,
+      document_date: defaultValues?.document_date
+        ? new Date(defaultValues.document_date)
+        : null,
       status: defaultValues?.status || "",
       processed_by: defaultValues?.processed_by || "",
       description: defaultValues?.description || "",
@@ -70,7 +78,7 @@ export default function DocumentForm({ setRender, setState, defaultValues, showS
     onSubmit: async (values) => {
       try {
         setSending(true);
-        
+
         if (defaultValues?.id) {
           // Güncelleme işlemi
           await axios.post(`/documents/update/${defaultValues.id}`, values);
@@ -82,11 +90,14 @@ export default function DocumentForm({ setRender, setState, defaultValues, showS
         }
 
         setState(false);
-        setRender(prev => prev + 1);
+        setRender((prev) => prev + 1);
         formik.resetForm();
       } catch (error) {
-        const errorMessage = error.response?.data?.error || 
-          (defaultValues?.id ? "Belge güncellenirken bir hata oluştu" : "Belge eklenirken bir hata oluştu");
+        const errorMessage =
+          error.response?.data?.error ||
+          (defaultValues?.id
+            ? "Belge güncellenirken bir hata oluştu"
+            : "Belge eklenirken bir hata oluştu");
         showError(errorMessage);
       } finally {
         setSending(false);
@@ -104,7 +115,10 @@ export default function DocumentForm({ setRender, setState, defaultValues, showS
   };
 
   return (
-    <form onSubmit={formik.handleSubmit} className="p-fluid d-flex flex-column gap-2">
+    <form
+      onSubmit={formik.handleSubmit}
+      className="p-fluid d-flex flex-column gap-2"
+    >
       <div className="p-field">
         <label htmlFor="document_no">Belge No</label>
         <InputText

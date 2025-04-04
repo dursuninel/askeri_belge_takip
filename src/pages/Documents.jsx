@@ -5,7 +5,7 @@ import { Button } from "primereact/button";
 import { Tag } from "primereact/tag";
 import { Tooltip } from "primereact/tooltip";
 import Modal from "../components/Modal";
-import DocumentForm from "../components/AdditionForms/DocumentForm";
+import DocumentForm from "../components/Forms/DocumentForm";
 import axios from "axios";
 import { Toast } from "primereact/toast";
 import { useRef } from "react";
